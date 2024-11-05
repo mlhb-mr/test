@@ -1,7 +1,7 @@
-* mypackage.pkg
+* GMP.pkg
 v 1.0
-d 'MYPACKAGE': Downloads dataset from GitHub with column and country filtering
+d 'GMP': Downloads dataset from GitHub with column and country filtering
 d
 d Distribution-Date: Current
-f mypackage.ado
-f mypackage.sthlp
+f GMP.ado
+f GMP.sthlp

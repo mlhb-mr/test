@@ -1,14 +1,14 @@
-* mypackage.sthlp
+* GMP.sthlp
 {smcl}
 {* *! version 1.0}{...}
 {title:Title}
 
-{p 4 8}{cmd:mypackage} {hline 2} Download and load dataset from GitHub with column and country filtering{p_end}
+{p 4 8}{cmd:GMP} {hline 2} Download and load dataset from GitHub with column and country filtering{p_end}
 
 {title:Syntax}
 
 {p 8 17 2}
-{cmd:mypackage} [{it:varlist}] [{cmd:,} {it:clear} {cmdab:co:untry(}{it:string}{cmd:)}]
+{cmd:GMP} [{it:varlist}] [{cmd:,} {it:clear} {cmdab:co:untry(}{it:string}{cmd:)}]
 
 {title:Description}
 
@@ -32,19 +32,19 @@ This command downloads and loads a dataset hosted on GitHub. Users can specify w
 
 {p 4 8 2}
 Load the complete dataset:{break}
-. mypackage
+. GMP
 
 {p 4 8 2}
 Load only specific variables (plus ISO3 and year):{break}
-. mypackage gdp population
+. GMP gdp population
 
 {p 4 8 2}
 Load data for a specific country:{break}
-. mypackage, country(USA)
+. GMP, country(USA)
 
 {p 4 8 2}
 Load specific variables for a specific country:{break}
-. mypackage gdp population, country(USA)
+. GMP gdp population, country(USA)
 
 {title:Notes}
 

@@ -1,5 +1,6 @@
-* mypackage.ado
-program define mypackage
+
+* GMP.ado
+program define GMP
     version 14.0
     syntax [anything] [, clear Country(string)]
     
