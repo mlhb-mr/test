@@ -1,0 +1,20 @@
+# stata.toc
+v 3
+d 'MYPACKAGE': Download and analyze dataset with ISO3 filtering
+p mypackage Package for downloading and filtering dataset by ISO3
+
+# mypackage.pkg
+v 1.0
+d 'MYPACKAGE': Download and analyze dataset with ISO3 filtering
+d
+d Author: Your Name
+d
+d Distribution-Date: {distribution_date}
+d
+d Support: email@domain.com
+d
+f mypackage.ado
+f mypackage.sthlp
+
+# Installation instructions for package users:
+net install mypackage, from(https://github.com/mlhb-mr/test/)
