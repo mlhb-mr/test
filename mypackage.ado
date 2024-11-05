@@ -4,7 +4,7 @@ program define mypackage
     syntax [anything] [, clear Country(string)]
     
     * URL of the raw data file on GitHub
-    local url "YOUR_GITHUB_RAW_URL_HERE"
+    local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/chainlinked_M1.dta"
     
     * Download the data
     capture copy "`url'" "temp_data.dta", replace
