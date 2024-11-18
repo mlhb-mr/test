@@ -5,7 +5,7 @@ program define GMP
     syntax [anything] [, clear Country(string)]
     
     * URL of the raw data file on GitHub
-    local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/chainlinked_M1.dta"
+    local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP.dta"
     
     * Download the data
     capture copy "`url'" "temp_data.dta", replace
