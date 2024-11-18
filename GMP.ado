@@ -1,5 +1,3 @@
-
-* GMP.ado
 program define GMP
     version 14.0
     syntax [anything] [, clear Country(string)]
@@ -7,22 +5,24 @@ program define GMP
     * URL of the raw data file on GitHub
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP.dta"
     
-    * Download the data
-    capture copy "`url'" "temp_data.dta", replace
+    * Create a temporary file
+    tempfile temp_data
+    
+    * Download the data with -refresh- flag
+    capture copy "`url'" "`temp_data'", replace public
     if _rc {
         display as error "Failed to download the dataset"
         exit _rc
     }
     
     * Load the downloaded data
-    use "temp_data.dta", clear
+    use "`temp_data'", clear
     
     * Check if ISO3 and year variables exist
     foreach var in ISO3 year {
         capture confirm variable `var'
         if _rc {
             display as error "`var' variable not found in the dataset"
-            erase "temp_data.dta"
             exit 498
         }
     }
@@ -37,7 +37,6 @@ program define GMP
         if !`: list country in countries' {
             display as error "Country code `country' not found in the dataset"
             display as text "Available country codes are: `countries'"
-            erase "temp_data.dta"
             exit 498
         }
         
@@ -56,7 +55,6 @@ program define GMP
             capture confirm variable `var'
             if _rc {
                 display as error "Variable `var' not found in the dataset"
-                erase "temp_data.dta"
                 exit 498
             }
         }
@@ -74,7 +72,4 @@ program define GMP
     * Display final dataset dimensions
     quietly: describe
     display as text "Final dataset: `r(N)' observations of `r(k)' variables"
-    
-    * Clean up
-    erase "temp_data.dta"
 end
