@@ -57,8 +57,8 @@ Load specific variables for a specific country:{break}
 {title:Author}
 
 {p 4 8 2}
-Your Name{break}
-Your Email
+Mohamed Lehbib{break}
+lehbib@nus.edu.sg
 
 {title:Version}
 
