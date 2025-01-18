@@ -4,7 +4,16 @@ program define GMP
     
     * Set default version if not specified
     if "`version'" == "" {
-        local version "2025_01"  // Default to current version
+        local version "current"  // Default to current version
+    }
+    
+    * Validate version format if not current
+    if "`version'" != "current" {
+        if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
+            display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04) or 'current'"
+            display as error "Valid quarters are: 01, 04, 07, 10"
+            exit 198
+        }
     }
     
     * Display package information
@@ -22,20 +31,25 @@ program define GMP
     capture mkdir "`base_dir'"
     capture mkdir "`vintages_dir'"
     
-    * Set data path and download file name
-    local data_path "`base_dir'GMP.dta"
-    local download_file "GMP.dta"
+    * Set data path and download file name based on version
+    if "`version'" == "current" {
+        local data_path "`base_dir'GMP.dta"
+        local download_file "GMP.dta"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
+    }
+    else {
+        local data_path "`vintages_dir'GMP_`version'.dta"
+        local download_file "GMP_`version'.dta"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
+    }
     
     * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
     if _rc {
         display as text "Dataset `download_file' not found locally. Attempting to download..."
         
-        * Base URL for dataset using correct GitHub raw URL format
-        local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main"
-        
         * Try to download the dataset
-        capture copy "`base_url'/`download_file'" "`data_path'", replace
+        capture copy "`download_url'" "`data_path'", replace
         if _rc {
             display as error "Failed to download dataset `download_file'"
             display as error "Please check if the version exists and your internet connection"
