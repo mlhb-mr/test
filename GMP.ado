@@ -2,55 +2,44 @@ program define GMP
     version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
     
-    * Determine current version based on date if version not specified
-    if "`version'" == "" {
-        local current_date = date(c(current_date), "DMY")
-        local current_year = year(date(c(current_date), "DMY"))
-        local current_month = month(date(c(current_date), "DMY"))
-        
-        * Determine quarter based on current month
-        if `current_month' <= 3 {
-            local quarter "01"
-        }
-        else if `current_month' <= 6 {
-            local quarter "04"
-        }
-        else if `current_month' <= 9 {
-            local quarter "07"
-        }
-        else {
-            local quarter "10"
-        }
-        
-        local version "`current_year'_`quarter'"
+    * Determine current version for display purposes
+    local current_date = date(c(current_date), "DMY")
+    local current_year = year(date(c(current_date), "DMY"))
+    local current_month = month(date(c(current_date), "DMY"))
+    
+    * Determine quarter based on current month
+    if `current_month' <= 3 {
+        local quarter "01"
+    }
+    else if `current_month' <= 6 {
+        local quarter "04"
+    }
+    else if `current_month' <= 9 {
+        local quarter "07"
+    }
+    else {
+        local quarter "10"
     }
     
-    * Validate version format
-    if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
-        display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04)"
-        display as error "Valid quarters are: 01, 04, 07, 10"
-        exit 198
-    }
+    local current_version "`current_year'_`quarter'"
     
     * Display package information
     display as text "Global Macro Data by Müller et. al (2025)"
-    display as text "Version: `version'"
+    display as text "Version: `current_version'"
     display as text "Website: https://github.com/mlhb-mr/test"
     display as text ""
     
     * Define paths
     local personal_dir = c(sysdir_personal)
     local base_dir "`personal_dir'/GMP/"
-    local vintages_dir "`base_dir'vintages/"
     
-    * Create base and vintages directories if they don't exist
+    * Create base directory if it doesn't exist
     capture mkdir "`base_dir'"
-    capture mkdir "`vintages_dir'"
     
-    * Set data path and download file name based on version
-    local data_path "`vintages_dir'GMP_`version'.dta"
-    local download_file "GMP_`version'.dta"
-    local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
+    * Set data path and download file name
+    local data_path "`base_dir'GMP.dta"
+    local download_file "GMP.dta"
+    local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
     
     * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
