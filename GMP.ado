@@ -2,6 +2,18 @@ program define GMP
     version 14.0
     syntax [anything] [, clear Country(string)]
     
+    * URL of the raw data file on GitHub - note the version in filename
+    local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP_2025_01.dta"
+    
+    * Extract version from URL - this gets "2025_01" from "GMP_2025_01.dta"
+    local version = regexs(1) if regexm("`url'", "GMP_([0-9_]+)\.dta")
+    
+    * Display package information
+    display as text "Global Macro Data by Müller et. al (2025)"
+    display as text "Version: `version'"
+    display as text "Website: [placeholder for website]"
+    display as text "" 
+    
     * Define path to dataset
     local personal_dir = c(sysdir_personal)
     local data_path "`personal_dir'GMP_data.dta"
