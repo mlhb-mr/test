@@ -1,8 +1,8 @@
 program define GMP
     version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
-    
-    * Determine current version for display purposes only
+	
+	* Determine current version for display purposes only
     local current_date = date(c(current_date), "DMY")
     local current_year = year(date(c(current_date), "DMY"))
     local current_month = month(date(c(current_date), "DMY"))
@@ -23,33 +23,57 @@ program define GMP
     
     local current_version "`current_year'_`quarter'"
     
+    * Set default version if not specified
+    if "`version'" == "" {
+        local version "current"  // Default to current version
+    }
+    
+    * Validate version format if not current
+    if "`version'" != "current" {
+        if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
+            display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04) or 'current'"
+            display as error "Valid quarters are: 01, 04, 07, 10"
+            exit 198
+        }
+    }
+    
     * Display package information
     display as text "Global Macro Data by Müller et. al (2025)"
     display as text "Version: `current_version'"
     display as text "Website: https://github.com/mlhb-mr/test"
     display as text ""
     
-    * Define paths and filenames
+    * Define paths
     local personal_dir = c(sysdir_personal)
     local base_dir "`personal_dir'/GMP/"
-    local data_path "`base_dir'GMP.dta"
+    local vintages_dir "`base_dir'vintages/"
     
-    * Create base directory if it doesn't exist
+    * Create base and vintages directories if they don't exist
     capture mkdir "`base_dir'"
+    capture mkdir "`vintages_dir'"
+    
+    * Set data path and download file name based on version
+    if "`version'" == "current" {
+        local data_path "`base_dir'GMP.dta"
+        local download_file "GMP.dta"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
+    }
+    else {
+        local data_path "`vintages_dir'GMP_`version'.dta"
+        local download_file "GMP_`version'.dta"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
+    }
     
     * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
     if _rc {
-        display as text "Dataset GMP.dta not found locally. Attempting to download..."
-        
-        * Base URL for dataset
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP.dta"
+        display as text "Dataset `download_file' not found locally. Attempting to download..."
         
         * Try to download the dataset
         capture copy "`download_url'" "`data_path'", replace
         if _rc {
-            display as error "Failed to download dataset GMP.dta"
-            display as error "Please check if the file exists and your internet connection"
+            display as error "Failed to download dataset `download_file'"
+            display as error "Please check if the version exists and your internet connection"
             exit _rc
         }
         display as text "Download complete."
