@@ -1,7 +1,11 @@
 * GMP.pkg
-v 1.0                                           
-d 'GMP': Downloads dataset from GitHub...       
+v 1.0
+d 'GMP': Global Macro Data by Müller et. al (2025)
 d
-d Distribution-Date: Current
-f GMP.ado                                       
+d Website: [placeholder for website]
+d Version: 2025_01
+d
+d This package provides access to the Global Macro Dataset
+d Date: Current
+f GMP.ado
 f GMP.sthlp
