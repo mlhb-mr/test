@@ -4,22 +4,13 @@ program define GMP
     
     * Set default version if not specified
     if "`version'" == "" {
-        local version "current"  // Default to current version
-    }
-    
-    * Validate version format (YYYY_QQ) if not current
-    if "`version'" != "current" {
-        if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
-            display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04) or 'current'"
-            display as error "Valid quarters are: 01, 04, 07, 10"
-            exit 198
-        }
+        local version "2025_01"  // Default to current version
     }
     
     * Display package information
     display as text "Global Macro Data by Müller et. al (2025)"
     display as text "Version: `version'"
-    display as text "Website: https://github.com/mlhb-mr/GMP"
+    display as text "Website: https://github.com/mlhb-mr/test"
     display as text ""
     
     * Define paths
@@ -32,14 +23,8 @@ program define GMP
     capture mkdir "`vintages_dir'"
     
     * Set data path based on version
-    if "`version'" == "current" {
-        local data_path "`base_dir'GMP.dta"
-        local download_file "GMP.dta"
-    }
-    else {
-        local data_path "`vintages_dir'GMP_`version'.dta"
-        local download_file "GMP_`version'.dta"
-    }
+    local data_path "`base_dir'GMP_`version'.dta"
+    local download_file "GMP_`version'.dta"
     
     * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
@@ -47,10 +32,7 @@ program define GMP
         display as text "Dataset `download_file' not found locally. Attempting to download..."
         
         * Base URL for dataset
-        local base_url "https://github.com/mlhb-mr/GMP/raw/main"
-        if "`version'" != "current" {
-            local base_url "`base_url'/vintages"
-        }
+        local base_url "https://raw.githubusercontent.com/mlhb-mr/test/main"
         
         * Try to download the dataset
         capture copy "`base_url'/`download_file'" "`data_path'", replace
