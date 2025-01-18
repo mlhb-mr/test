@@ -2,28 +2,22 @@ program define GMP
     version 14.0
     syntax [anything] [, clear Country(string)]
     
-    * Define paths
+    * Define path to dataset
     local personal_dir = c(sysdir_personal)
     local data_path "`personal_dir'GMP_data.dta"
-    local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP.dta"
     
-    * Check if dataset exists locally
+    * Check if dataset exists
     capture confirm file "`data_path'"
     if _rc {
-        * Dataset not found locally - download it
-        display as text "Downloading dataset for first use..."
-        
-        capture copy "`url'" "`data_path'", replace public
-        if _rc {
-            display as error "Failed to download the dataset"
-            exit _rc
-        }
-        display as text "Dataset successfully downloaded and stored locally"
+        display as error "Dataset not found. There might have been an error during package installation."
+        display as error "Please reinstall the package using: net install gmp, from(https://raw.githubusercontent.com/mlhb-mr/test/main/) replace"
+        exit 601
     }
     
-    * Load the local dataset
+    * Load the dataset
     use "`data_path'", clear
     
+    * Rest of your original code remains the same
     * Check if ISO3 and year variables exist
     foreach var in ISO3 year {
         capture confirm variable `var'
