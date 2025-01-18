@@ -22,9 +22,9 @@ program define GMP
     capture mkdir "`base_dir'"
     capture mkdir "`vintages_dir'"
     
-    * Set data path based on version
-    local data_path "`base_dir'GMP_`version'.dta"
-    local download_file "GMP_`version'.dta"
+    * Set data path and download file name
+    local data_path "`base_dir'GMP.dta"
+    local download_file "GMP.dta"
     
     * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
