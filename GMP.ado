@@ -12,7 +12,7 @@ program define GMP
     display as text "Global Macro Data by Müller et. al (2025)"
     display as text "Version: `version'"
     display as text "Website: [placeholder for website]"
-    display as text "" 
+    display as text ""  
     
     * Define path to dataset
     local personal_dir = c(sysdir_personal)
