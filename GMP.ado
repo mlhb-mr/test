@@ -2,18 +2,12 @@ program define GMP
     version 14.0
     syntax [anything] [, clear Country(string)]
     
-    * URL with new dataset name
+    * URL with dataset name
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP_2025_01.dta"
-    
-    * Extract version number correctly
-    local version ""
-    if regexm("`url'", "GMP_([0-9_]+)\.dta") {
-        local version = regexs(1)
-    }
     
     * Display package information
     display as text "Global Macro Data by Müller et. al (2025)"
-    display as text "Version: `version'"
+    display as text "Version: 2025_01"
     display as text "Website: [placeholder for website]"
     display as text ""
     
