@@ -2,12 +2,12 @@ program define GMP
     version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
     
-    * Determine current version for display purposes
+    * Determine current version for display purposes only
     local current_date = date(c(current_date), "DMY")
     local current_year = year(date(c(current_date), "DMY"))
     local current_month = month(date(c(current_date), "DMY"))
     
-    * Determine quarter based on current month
+    * Determine quarter based on current month (for display only)
     if `current_month' <= 3 {
         local quarter "01"
     }
@@ -29,28 +29,27 @@ program define GMP
     display as text "Website: https://github.com/mlhb-mr/test"
     display as text ""
     
-    * Define paths
+    * Define paths and filenames
     local personal_dir = c(sysdir_personal)
     local base_dir "`personal_dir'/GMP/"
+    local data_path "`base_dir'GMP.dta"
     
     * Create base directory if it doesn't exist
     capture mkdir "`base_dir'"
     
-    * Set data path and download file name
-    local data_path "`base_dir'GMP.dta"
-    local download_file "GMP.dta"
-    local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
-    
     * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
     if _rc {
-        display as text "Dataset `download_file' not found locally. Attempting to download..."
+        display as text "Dataset GMP.dta not found locally. Attempting to download..."
+        
+        * Base URL for dataset
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP.dta"
         
         * Try to download the dataset
         capture copy "`download_url'" "`data_path'", replace
         if _rc {
-            display as error "Failed to download dataset `download_file'"
-            display as error "Please check if the version exists and your internet connection"
+            display as error "Failed to download dataset GMP.dta"
+            display as error "Please check if the file exists and your internet connection"
             exit _rc
         }
         display as text "Download complete."
