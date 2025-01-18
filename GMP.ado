@@ -34,6 +34,16 @@ program define GMP
             display as text "Using current version from main directory"
             local success 1
         }
+        else {
+            * Try downloading from main directory
+            local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main"
+            capture copy "`base_url'/GMP_2025_01.dta" "`main_path'", replace
+            if !_rc {
+                use "`main_path'", clear
+                display as text "Downloaded current version to main directory"
+                local success 1
+            }
+        }
     }
     
     * If not loaded from main directory, try vintages
@@ -53,7 +63,7 @@ program define GMP
             capture copy "`base_url'/GMP_`version'.dta" "`data_path'", replace
             if _rc {
                 display as error "Failed to download dataset version `version'"
-                display as error "Please check if the version exists and your internet connection haha"
+                display as error "Please check if the version exists and your internet connection"
                 exit _rc
             }
             display as text "Download complete."
