@@ -25,29 +25,43 @@ program define GMP
     local vintages_dir "`personal_dir'/GMP/vintages/"
     local data_path "`vintages_dir'GMP_`version'.dta"
     
-    * Create vintages directory if it doesn't exist
-    capture mkdir "`vintages_dir'"
-    
-    * Check if requested version exists, if not, try to download it
-    capture confirm file "`data_path'"
-    if _rc {
-        display as text "Dataset version `version' not found locally. Attempting to download..."
-        
-        * Base URL for dataset
-        local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages"
-        
-        * Try to download the dataset
-        capture copy "`base_url'/GMP_`version'.dta" "`data_path'", replace
-        if _rc {
-            display as error "Failed to download dataset version `version'"
-            display as error "Please check if the version exists and your internet connection"
-            exit _rc
+    * For latest version, first try to load from main directory
+    if "`version'" == "2025_01" {
+        local main_path "`personal_dir'/GMP_2025_01.dta"
+        capture confirm file "`main_path'"
+        if !_rc {
+            use "`main_path'", clear
+            display as text "Using current version from main directory"
+            local success 1
         }
-        display as text "Download complete."
     }
     
-    * Load the dataset
-    use "`data_path'", clear
+    * If not loaded from main directory, try vintages
+    if "`success'" != "1" {
+        * Create vintages directory if it doesn't exist
+        capture mkdir "`vintages_dir'"
+        
+        * Check if requested version exists, if not, try to download it
+        capture confirm file "`data_path'"
+        if _rc {
+            display as text "Dataset version `version' not found locally. Attempting to download..."
+            
+            * Base URL for dataset
+            local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages"
+            
+            * Try to download the dataset
+            capture copy "`base_url'/GMP_`version'.dta" "`data_path'", replace
+            if _rc {
+                display as error "Failed to download dataset version `version'"
+                display as error "Please check if the version exists and your internet connection"
+                exit _rc
+            }
+            display as text "Download complete."
+        }
+        
+        * Load the dataset from vintages
+        use "`data_path'", clear
+    }
     
     * Check if ISO3 and year variables exist
     foreach var in ISO3 year {
