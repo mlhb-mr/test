@@ -2,21 +2,27 @@ program define GMP
     version 14.0
     syntax [anything] [, clear Country(string)]
     
-    * URL of the raw data file on GitHub
+    * Define paths
+    local personal_dir = c(sysdir_personal)
+    local data_path "`personal_dir'GMP_data.dta"
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP.dta"
     
-    * Create a temporary file
-    tempfile temp_data
-    
-    * Download the data with -refresh- flag
-    capture copy "`url'" "`temp_data'", replace public
+    * Check if dataset exists locally
+    capture confirm file "`data_path'"
     if _rc {
-        display as error "Failed to download the dataset"
-        exit _rc
+        * Dataset not found locally - download it
+        display as text "Downloading dataset for first use..."
+        
+        capture copy "`url'" "`data_path'", replace public
+        if _rc {
+            display as error "Failed to download the dataset"
+            exit _rc
+        }
+        display as text "Dataset successfully downloaded and stored locally"
     }
     
-    * Load the downloaded data
-    use "`temp_data'", clear
+    * Load the local dataset
+    use "`data_path'", clear
     
     * Check if ISO3 and year variables exist
     foreach var in ISO3 year {
