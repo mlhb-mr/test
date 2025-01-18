@@ -1,6 +1,6 @@
 program define GMP
     version 14.0
-    syntax [anything] [, clear Version(string) Country(string) Update]
+    syntax [anything] [, clear Version(string) Country(string)]
 	
 	* Determine current version for display purposes only
     local current_date = date(c(current_date), "DMY")
@@ -64,10 +64,10 @@ program define GMP
         local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
     }
     
-    * Check if dataset exists or if update is requested
+    * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
-    if _rc | "`update'" != "" {
-        display as text "Downloading dataset `download_file'..."
+    if _rc {
+        display as text "Dataset `download_file' not found locally. Attempting to download..."
         
         * Try to download the dataset
         capture copy "`download_url'" "`data_path'", replace
