@@ -31,8 +31,8 @@ program define GMP
     if _rc {
         display as text "Dataset `download_file' not found locally. Attempting to download..."
         
-        * Base URL for dataset
-        local base_url "https://raw.githubusercontent.com/mlhb-mr/test/main"
+        * Base URL for dataset using correct GitHub raw URL format
+        local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main"
         
         * Try to download the dataset
         capture copy "`base_url'/`download_file'" "`data_path'", replace
