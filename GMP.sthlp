@@ -36,6 +36,14 @@ versions (YYYY_QQ format) or as the current version.
 {p 4 8 2}
 {it:varlist} optional list of variables to keep in addition to ISO3 and year. If not specified, all variables are retained.
 
+{title:Updates}
+
+{p 4 4 2}
+Click below to install/update to the latest version:{p_end}
+
+{p 4 4 2}
+{browse "https://raw.githubusercontent.com/mlhb-mr/test/main/GMP.pkg":Click here to update GMP}
+
 {title:Examples}
 
 {p 4 8 2}
