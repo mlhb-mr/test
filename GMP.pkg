@@ -3,7 +3,7 @@ v 1.0
 d 'GMP': Global Macro Data by Müller et. al (2025)
 d
 d Website: [placeholder for website]
-d Version: 2025_01
+d Version: Matches dataset version (YYYY_MM)
 d
 d This package provides access to the Global Macro Dataset
 d Date: Current
