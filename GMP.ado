@@ -1,32 +1,48 @@
 program define GMP
     version 14.0
-    syntax [anything] [, clear Country(string)]
+    syntax [anything] [, clear Version(string) Country(string)]
     
-    * URL with dataset name
-    local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP_2025_01.dta"
+    * Set default version if not specified
+    if "`version'" == "" {
+        local version "2025_01"  // Default to latest version
+    }
+    
+    * Validate version format (YYYY_QQ)
+    if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
+        display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04, 2025_01)"
+        display as error "Valid quarters are: 01, 04, 07, 10"
+        exit 198
+    }
     
     * Display package information
     display as text "Global Macro Data by Müller et. al (2025)"
-    display as text "Version: 2025_01"
+    display as text "Version: `version'"
     display as text "Website: [placeholder for website]"
     display as text ""
     
-    * Define path to dataset
+    * Define paths
     local personal_dir = c(sysdir_personal)
-    local data_path "`personal_dir'GMP_data.dta"
+    local vintages_dir "`personal_dir'/GMP/vintages/"
+    local data_path "`vintages_dir'GMP_`version'.dta"
     
-    * Check if dataset exists
+    * Check if vintages directory exists
+    capture confirm file "`vintages_dir'"
+    if _rc {
+        display as error "Vintages directory not found. Creating directory..."
+        !mkdir "`vintages_dir'"
+    }
+    
+    * Check if requested version exists
     capture confirm file "`data_path'"
     if _rc {
-        display as error "Dataset not found. There might have been an error during package installation."
-        display as error "Please reinstall the package using: net install gmp, from(https://raw.githubusercontent.com/mlhb-mr/test/main/) replace"
+        display as error "Dataset version `version' not found."
+        display as error "Please download the dataset using: gmp_download, version(`version')"
         exit 601
     }
     
     * Load the dataset
     use "`data_path'", clear
     
-    * Rest of your original code remains the same
     * Check if ISO3 and year variables exist
     foreach var in ISO3 year {
         capture confirm variable `var'
