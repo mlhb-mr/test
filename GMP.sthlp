@@ -2,7 +2,7 @@
 {* *! version 1.0}{...}
 {title:Title}
 
-{p 4 8}{cmd:GMP} {hline 2} Download and load dataset from GitHub with version control, column and country filtering{p_end}
+{p 4 8}{cmd:GMP} {hline 2} Download and analyze Global Macro Dataset with version control{p_end}
 
 {title:Syntax}
 
@@ -12,7 +12,9 @@
 {title:Description}
 
 {p 4 4 2}
-This command loads a specific version of the Global Macro Dataset. Users can specify which version to load, which variables to keep, and filter for specific countries. The dataset is released quarterly with versions formatted as YYYY_QQ (e.g., 2024_04, 2025_01).
+This command downloads and loads the Global Macro Dataset. Users can specify which version to load, 
+which variables to keep, and filter for specific countries. The dataset is available in quarterly 
+versions (YYYY_QQ format) or as the current version.
 
 {title:Options}
 
@@ -20,10 +22,14 @@ This command loads a specific version of the Global Macro Dataset. Users can spe
 {cmd:clear} specifies to clear the current dataset in memory before loading the new one.
 
 {p 4 8 2}
-{cmd:version(}{it:string}{cmd:)} specifies which version of the dataset to load (e.g., "2024_04", "2025_01"). If not specified, defaults to the latest version.
+{cmd:version(}{it:string}{cmd:)} specifies which version of the dataset to load. Use either:
+{p 8 12 2}
+- "current" for the latest version (default)
+{p 8 12 2}
+- YYYY_QQ format (e.g., "2024_04") for specific versions
 
 {p 4 8 2}
-{cmd:country(}{it:string}{cmd:)} specifies a country to filter by using its ISO3 code (e.g., "USA", "GBR", "FRA"). Case-insensitive.
+{cmd:country(}{it:string}{cmd:)} specifies a country to filter by using its ISO3 code (e.g., "USA", "GBR"). Case-insensitive.
 
 {title:Arguments}
 
@@ -33,7 +39,7 @@ This command loads a specific version of the Global Macro Dataset. Users can spe
 {title:Examples}
 
 {p 4 8 2}
-Load the latest version of the dataset:{break}
+Load the current version:{break}
 . GMP
 
 {p 4 8 2}
@@ -41,30 +47,45 @@ Load a specific version:{break}
 . GMP, version(2024_04)
 
 {p 4 8 2}
-Load specific variables from a particular version:{break}
-. GMP gdp population, version(2024_04)
+Load specific variables:{break}
+. GMP gdp population
 
 {p 4 8 2}
-Load data for a specific country and version:{break}
-. GMP, country(USA) version(2024_04)
+Load data for a specific country:{break}
+. GMP, country(USA)
 
-{title:Notes}
+{p 4 8 2}
+Combine options:{break}
+. GMP gdp population, country(USA) version(2024_04)
+
+{title:Storage and Updates}
 
 {p 4 4 2}
-- Dataset versions are released quarterly (01, 04, 07, 10){break}
-- ISO3 and year variables are always kept regardless of specified variables{break}
-- The command will return an error if specified variables don't exist in the dataset{break}
-- The command will return an error if ISO3 or year variables are missing from the dataset{break}
-- The command will return an error if specified country code is not found in the dataset{break}
-- The command will return an error if specified version is not found or has invalid format
+The package stores datasets in the following locations:
+{p 8 12 2}
+- Current version: {it:sysdir_personal}/GMP/GMP.dta
+{p 8 12 2}
+- Specific versions: {it:sysdir_personal}/GMP/vintages/GMP_YYYY_QQ.dta
+
+{p 4 4 2}
+The command automatically:
+{p 8 12 2}
+- Creates necessary directories
+{p 8 12 2}
+- Downloads missing datasets
+{p 8 12 2}
+- Validates version formats
+{p 8 12 2}
+- Checks for required variables
 
 {title:Author}
 
 {p 4 8 2}
 Mohamed Lehbib{break}
-lehbib@nus.edu.sg
+Email: lehbib@nus.edu.sg{break}
+GitHub: https://github.com/mlhb-mr/GMP
 
 {title:Version}
 
 {p 4 8 2}
-1.0
+1.0.0
