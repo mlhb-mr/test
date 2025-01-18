@@ -5,8 +5,11 @@ program define GMP
     * URL with new dataset name
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMP_2025_01.dta"
     
-    * Extract version number from the URL (2025_01)
-    local version = regexs(1) if regexm("`url'", "GMP_([0-9_]+)\.dta")
+    * Extract version number correctly
+    local version ""
+    if regexm("`url'", "GMP_([0-9_]+)\.dta") {
+        local version = regexs(1)
+    }
     
     * Display package information
     display as text "Global Macro Data by Müller et. al (2025)"
