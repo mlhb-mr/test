@@ -53,7 +53,7 @@ program define GMP
             capture copy "`base_url'/GMP_`version'.dta" "`data_path'", replace
             if _rc {
                 display as error "Failed to download dataset version `version'"
-                display as error "Please check if the version exists and your internet connection"
+                display as error "Please check if the version exists and your internet connection haha"
                 exit _rc
             }
             display as text "Download complete."
