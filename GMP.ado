@@ -25,19 +25,25 @@ program define GMP
     local vintages_dir "`personal_dir'/GMP/vintages/"
     local data_path "`vintages_dir'GMP_`version'.dta"
     
-    * Check if vintages directory exists
-    capture confirm file "`vintages_dir'"
-    if _rc {
-        display as error "Vintages directory not found. Creating directory..."
-        !mkdir "`vintages_dir'"
-    }
+    * Create vintages directory if it doesn't exist
+    capture mkdir "`vintages_dir'"
     
-    * Check if requested version exists
+    * Check if requested version exists, if not, try to download it
     capture confirm file "`data_path'"
     if _rc {
-        display as error "Dataset version `version' not found."
-        display as error "Please download the dataset using: gmp_download, version(`version')"
-        exit 601
+        display as text "Dataset version `version' not found locally. Attempting to download..."
+        
+        * Base URL for dataset
+        local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages"
+        
+        * Try to download the dataset
+        capture copy "`base_url'/GMP_`version'.dta" "`data_path'", replace
+        if _rc {
+            display as error "Failed to download dataset version `version'"
+            display as error "Please check if the version exists and your internet connection"
+            exit _rc
+        }
+        display as text "Download complete."
     }
     
     * Load the dataset
