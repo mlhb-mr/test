@@ -2,18 +2,34 @@ program define GMP
     version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
     
-    * Set default version if not specified
+    * Determine current version based on date if version not specified
     if "`version'" == "" {
-        local version "current"  // Default to current version
+        local current_date = date(c(current_date), "DMY")
+        local current_year = year(date(c(current_date), "DMY"))
+        local current_month = month(date(c(current_date), "DMY"))
+        
+        * Determine quarter based on current month
+        if `current_month' <= 3 {
+            local quarter "01"
+        }
+        else if `current_month' <= 6 {
+            local quarter "04"
+        }
+        else if `current_month' <= 9 {
+            local quarter "07"
+        }
+        else {
+            local quarter "10"
+        }
+        
+        local version "`current_year'_`quarter'"
     }
     
-    * Validate version format if not current
-    if "`version'" != "current" {
-        if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
-            display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04) or 'current'"
-            display as error "Valid quarters are: 01, 04, 07, 10"
-            exit 198
-        }
+    * Validate version format
+    if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
+        display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04)"
+        display as error "Valid quarters are: 01, 04, 07, 10"
+        exit 198
     }
     
     * Display package information
@@ -32,16 +48,9 @@ program define GMP
     capture mkdir "`vintages_dir'"
     
     * Set data path and download file name based on version
-    if "`version'" == "current" {
-        local data_path "`base_dir'GMP.dta"
-        local download_file "GMP.dta"
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
-    }
-    else {
-        local data_path "`vintages_dir'GMP_`version'.dta"
-        local download_file "GMP_`version'.dta"
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
-    }
+    local data_path "`vintages_dir'GMP_`version'.dta"
+    local download_file "GMP_`version'.dta"
+    local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
     
     * Check if dataset exists, if not, try to download it
     capture confirm file "`data_path'"
