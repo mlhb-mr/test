@@ -1,3 +1,6 @@
 v 3
-d 'GMP': Download and analyze dataset with ISO3 filtering
-p mypackage Package for downloading and filtering dataset by ISO3
+d Materials by Mohamed Lehbib
+d lehbib@nus.edu.sg
+d https://github.com/mlhb-mr/GMP
+d
+p GMP Global Macroeconomic Dataset with version control and country filtering
