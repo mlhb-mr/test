@@ -4,10 +4,14 @@
 
 {p 4 8}{cmd:GMP} {hline 2} Download and analyze Global Macro Dataset with version control{p_end}
 
+{p 4 8 2}
+{browse "https://raw.githubusercontent.com/mlhb-mr/test/main/GMP.pkg":Click here to update package} {break}
+{stata "GMP, update":Click here to update dataset}
+
 {title:Syntax}
 
 {p 8 17 2}
-{cmd:GMP} [{it:varlist}] [{cmd:,} {it:clear} {cmdab:v:ersion(}{it:string}{cmd:)} {cmdab:co:untry(}{it:string}{cmd:)}]
+{cmd:GMP} [{it:varlist}] [{cmd:,} {it:clear} {cmdab:v:ersion(}{it:string}{cmd:)} {cmdab:co:untry(}{it:string}{cmd:)} {cmdab:up:date}]
 
 {title:Description}
 
@@ -31,24 +35,23 @@ versions (YYYY_QQ format) or as the current version.
 {p 4 8 2}
 {cmd:country(}{it:string}{cmd:)} specifies a country to filter by using its ISO3 code (e.g., "USA", "GBR"). Case-insensitive.
 
+{p 4 8 2}
+{cmd:update} forces download of the latest version of the dataset, even if it exists locally.
+
 {title:Arguments}
 
 {p 4 8 2}
 {it:varlist} optional list of variables to keep in addition to ISO3 and year. If not specified, all variables are retained.
-
-{title:Updates}
-
-{p 4 4 2}
-Click below to install/update to the latest version:{p_end}
-
-{p 4 4 2}
-{browse "https://raw.githubusercontent.com/mlhb-mr/test/main/GMP.pkg":Click here to update GMP}
 
 {title:Examples}
 
 {p 4 8 2}
 Load the current version:{break}
 . GMP
+
+{p 4 8 2}
+Update and load the latest data:{break}
+. GMP, update
 
 {p 4 8 2}
 Load a specific version:{break}
