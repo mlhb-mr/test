@@ -41,7 +41,7 @@ program define GMP
     display as text "Global Macro Data by Müller et. al (2025)"
     display as text "Version: `current_version'"
     display as text "Website: https://github.com/mlhb-mr/test"
-    display as text "{browse `"""' net install GMP, from(https://github.com/mlhb-mr/test/raw/refs/heads/main) replace force`"""':{bf:{color blue}[Update]}}"
+    display `"{browse "net install GMP, from(https://github.com/mlhb-mr/test/raw/refs/heads/main) replace force":【Update】}"'
     display as text ""
     
     * Define paths
