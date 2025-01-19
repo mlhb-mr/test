@@ -1,102 +1,104 @@
 {smcl}
 {* *! version 1.0.0}{...}
+{vieweralsosee "" "--"}{...}
+{viewerjumpto "Syntax" "GMD##syntax"}{...}
+{viewerjumpto "Description" "GMD##description"}{...}
+{viewerjumpto "Options" "GMD##options"}{...}
+{viewerjumpto "Examples" "GMD##examples"}{...}
+{viewerjumpto "Storage" "GMD##storage"}{...}
 {title:Title}
 
-{p 4 8}{cmd:GMD} {hline 2} Download and analyze Global Macro Dataset with version control{p_end}
+{phang}
+{bf:GMD} {hline 2} Download and analyze Global Macro Dataset with version control
 
+{marker syntax}{...}
 {title:Syntax}
 
 {p 8 17 2}
-{cmd:GMD} [{it:varlist}] [{cmd:,} {it:clear} {cmdab:v:ersion(}{it:string}{cmd:)} {cmdab:co:untry(}{it:string}{cmd:)}]
+{cmdab:GMD} [{it:varlist}] [{cmd:,} {it:clear} {cmdab:v:ersion(}{it:string}{cmd:)} {cmdab:co:untry(}{it:string}{cmd:)}]
 
+{marker description}{...}
 {title:Description}
 
-{p 4 4 2}
+{pstd}
 This command downloads and loads the Global Macro Dataset. Users can specify which version to load, 
 which variables to keep, and filter for specific countries. The dataset is available in quarterly 
 versions (YYYY_QQ format) or as the current version.
 
+{marker options}{...}
 {title:Options}
 
-{p 4 8 2}
+{phang}
 {cmd:clear} specifies to clear the current dataset in memory before loading the new one.
 
-{p 4 8 2}
-{cmd:version(}{it:string}{cmd:)} specifies which version of the dataset to load. Use either:
-{p 8 12 2}
-- "current" for the latest version (default)
-{p 8 12 2}
+{phang}
+{cmd:version(}{it:string}{cmd:)} specifies which version of the dataset to load. Use either:{p_end}
+{pmore}
+- "current" for the latest version (default){p_end}
+{pmore}
 - YYYY_QQ format (e.g., "2024_04") for specific versions
 
-{p 4 8 2}
-{cmd:country(}{it:string}{cmd:)} specifies a country to filter by using its ISO3 code (e.g., "USA", "GBR"). Case-insensitive.
-{p 8 12 2}
+{phang}
+{cmd:country(}{it:string}{cmd:)} specifies a country to filter by using its ISO3 code 
+(e.g., "USA", "GBR"). Case-insensitive.{p_end}
+{pmore}
 Type {cmd:GMD isomapping} to see a list of valid country codes and their corresponding full names.
 
+{marker arguments}{...}
 {title:Arguments}
 
-{p 4 8 2}
+{phang}
 {it:varlist} optional list of variables to keep in addition to ISO3 and year. If not specified, all variables are retained.
 
+{marker examples}{...}
 {title:Examples}
 
-{p 4 8 2}
-Load the current version:
-{p 8 12 2}{cmd:. GMD}
+{phang}Load the current version:{p_end}
+{phang2}{cmd:. GMD}
 
-{p 4 8 2}
-Load a specific version:
-{p 8 12 2}{cmd:. GMD, version(2024_04)}
+{phang}Load a specific version:{p_end}
+{phang2}{cmd:. GMD, version(2024_04)}
 
-{p 4 8 2}
-Load specific variables:
-{p 8 12 2}{cmd:. GMD gdp population}
+{phang}Load specific variables:{p_end}
+{phang2}{cmd:. GMD gdp population}
 
-{p 4 8 2}
-Load data for a specific country:
-{p 8 12 2}{cmd:. GMD, country(USA)}
+{phang}Load data for a specific country:{p_end}
+{phang2}{cmd:. GMD, country(USA)}
 
-{p 4 8 2}
-View country codes and names:
-{p 8 12 2}{cmd:. GMD isomapping}
+{phang}View country codes and names:{p_end}
+{phang2}{cmd:. GMD isomapping}
 
-{p 4 8 2}
-Combine options:
-{p 8 12 2}{cmd:. GMD ngdp pop, country(USA) version(2024_04)}
+{phang}Combine options:{p_end}
+{phang2}{cmd:. GMD ngdp pop, country(USA) version(2024_04)}
 
+{marker storage}{...}
 {title:Storage and Updates}
 
-{p 4 4 2}
+{pstd}
 The package stores datasets in the following locations:
 
-{p 8 12 2}
-- Current version: {it:sysdir_personal}/GMD/GMD.dta
+{pmore}
+Current version: {it:sysdir_personal}/GMD/GMD.dta
 
-{p 8 12 2}
-- Specific versions: {it:sysdir_personal}/GMD/vintages/GMD_YYYY_QQ.dta
+{pmore}
+Specific versions: {it:sysdir_personal}/GMD/vintages/GMD_YYYY_QQ.dta
 
-{p 4 4 2}
+{pstd}
 The command automatically:
 
-{p 8 12 2}
-- Creates necessary directories
-{p 8 12 2}
-- Downloads missing datasets
-{p 8 12 2}
-- Validates version formats
-{p 8 12 2}
-- Checks for required variables
+{pmore}- Creates necessary directories{p_end}
+{pmore}- Downloads missing datasets{p_end}
+{pmore}- Validates version formats{p_end}
+{pmore}- Checks for required variables{p_end}
 
 {title:Author}
 
-{p 4 8 2}
-Mohamed Lehbib
-{p 4 8 2}
-Email: {browse "mailto:lehbib@nus.edu.sg":lehbib@nus.edu.sg}
-{p 4 8 2}
+{pstd}
+Mohamed Lehbib{break}
+Email: {browse "mailto:lehbib@nus.edu.sg":lehbib@nus.edu.sg}{break}
 Website: {browse "https://www.globalmacrodata.com":https://www.globalmacrodata.com}
 
 {title:Version}
 
-{p 4 8 2}
+{pstd}
 1.0.0
