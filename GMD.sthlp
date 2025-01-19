@@ -115,20 +115,14 @@ Working Paper.
 For in-line citations:
 
 {pstd}
-(...) using data from the Global Macro Database (Müller et al., 2025)
-
-{pstd}
-Müller et al. (2025) provide a comprehensive global macro dataset (...)
-
-{pstd}
 BibTeX:
 
-{cmd}
+{pstd}
 @techreport{mueller2025global,
-    title = {The Global Macro Database: A New Historical Dataset of Macroeconomic Statistics},
-    author = {Müller, Karsten and Xu, Chenzi and Lehbib, Mohamed and Chen, Ziliang},
-    year = {2025},
-    type = {Working Paper}
+    title = {The Global Macro Database: A New Historical Dataset of Macroeconomic Statistics},{break}
+    author = {Müller, Karsten and Xu, Chenzi and Lehbib, Mohamed and Chen, Ziliang},{break}
+    year = {2025},{break}
+    type = {Working Paper}{break}
 }
 {txt}
 
