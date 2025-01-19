@@ -60,7 +60,7 @@ Type {cmd:GMD isomapping} to see a list of valid country codes and their corresp
 {phang2}{cmd:. GMD, version(2024_04)}
 
 {phang}Load specific variables:{p_end}
-{phang2}{cmd:. GMD gdp population}
+{phang2}{cmd:. GMD nGDP pop}
 
 {phang}Load data for a specific country:{p_end}
 {phang2}{cmd:. GMD, country(USA)}
@@ -69,7 +69,7 @@ Type {cmd:GMD isomapping} to see a list of valid country codes and their corresp
 {phang2}{cmd:. GMD isomapping}
 
 {phang}Combine options:{p_end}
-{phang2}{cmd:. GMD ngdp pop, country(USA) version(2024_04)}
+{phang2}{cmd:. GMD nGDP pop, country(USA) version(2024_04)}
 
 {marker storage}{...}
 {title:Storage and Updates}
