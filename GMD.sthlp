@@ -9,7 +9,7 @@
 {title:Title}
 
 {phang}
-{bf:GMD} {hline 2} Download and analyze Global Macro Dataset with version control
+{bf:GMD} {hline 2} Download and analyze Global Macro Dataset with version control f
 
 {marker syntax}{...}
 {title:Syntax}
