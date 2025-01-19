@@ -1,6 +1,0 @@
-v 3
-d Materials by Mohamed Lehbib
-d lehbib@nus.edu.sg
-d https://github.com/mlhb-mr/GMP
-d
-p GMP Global Macroeconomic Dataset with version control and country filtering
