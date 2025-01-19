@@ -9,7 +9,7 @@
 {title:Title}
 
 {phang}
-{bf:GMD} {hline 2} Download and analyze Global Macro Dataset with version control f
+{bf:GMD} {hline 2} Download and analyze Global Macro Database with version control
 
 {marker syntax}{...}
 {title:Syntax}
@@ -21,7 +21,7 @@
 {title:Description}
 
 {pstd}
-This command downloads and loads the Global Macro Dataset. Users can specify which version to load, 
+This command downloads and loads the Global Macro Database. Users can specify which version to load, 
 which variables to keep, and filter for specific countries. The dataset is available in quarterly 
 versions (YYYY_QQ format) or as the current version.
 
