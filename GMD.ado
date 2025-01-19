@@ -1,8 +1,17 @@
 program define GMD
     version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
+    
+    * Check if isomapping is specifically requested
+    if "`anything'" == "isomapping" {
+        local personal_dir = c(sysdir_personal)
+        local base_dir "`personal_dir'/GMD/"
+        use "`base_dir'isomapping.dta", clear
+        display as text "Displaying country codes and names from isomapping.dta"
+        exit
+    }
 	
-	* Determine current version for display purposes only
+    * Determine current version for display purposes only
     local current_date = date(c(current_date), "DMY")
     local current_year = year(date(c(current_date), "DMY"))
     local current_month = month(date(c(current_date), "DMY"))
@@ -100,7 +109,8 @@ program define GMD
         quietly: levelsof ISO3, local(countries)
         if !`: list country in countries' {
             display as error "Country code `country' not found in the dataset"
-            display as text "Available country codes are: `countries'"
+            display as text "To see a list of valid country codes and full country names, type:"
+            display as input "GMD isomapping"
             exit 498
         }
         
@@ -110,7 +120,7 @@ program define GMD
     }
     
     * If user specified variables, keep only those plus ISO3 and year
-    if "`anything'" != "" {
+    if "`anything'" != "" & "`anything'" != "isomapping" {
         * Create a local macro with all variables to keep
         local keepvars "ISO3 year `anything'"
         
@@ -129,7 +139,7 @@ program define GMD
         * Display success message with kept variables
         display as text "Dataset loaded with variables: `keepvars'"
     }
-    else {
+    else if "`anything'" != "isomapping" {
         display as text "Dataset loaded with all variables"
     }
     
