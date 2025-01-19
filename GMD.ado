@@ -68,7 +68,7 @@ program define GMD
     }
     
     * Display package information
-    display as text "Global Macro Data by Müller et. al (2025)"
+    display as text "Global Macro Database by Müller et. al (2025)"
     display as text "Version: `current_version'"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
