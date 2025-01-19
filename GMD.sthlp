@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0}{...}
+{* *! version 1.0.0}{...}
 {title:Title}
 
 {p 4 8}{cmd:GMD} {hline 2} Download and analyze Global Macro Dataset with version control{p_end}
@@ -30,6 +30,8 @@ versions (YYYY_QQ format) or as the current version.
 
 {p 4 8 2}
 {cmd:country(}{it:string}{cmd:)} specifies a country to filter by using its ISO3 code (e.g., "USA", "GBR"). Case-insensitive.
+{p 8 12 2}
+Type {cmd:GMD isomapping} to see a list of valid country codes and their corresponding full names.
 
 {title:Arguments}
 
@@ -39,36 +41,43 @@ versions (YYYY_QQ format) or as the current version.
 {title:Examples}
 
 {p 4 8 2}
-Load the current version:{break}
-. GMD
+Load the current version:
+{p 8 12 2}{cmd:. GMD}
 
 {p 4 8 2}
-Load a specific version:{break}
-. GMD, version(2024_04)
+Load a specific version:
+{p 8 12 2}{cmd:. GMD, version(2024_04)}
 
 {p 4 8 2}
-Load specific variables:{break}
-. GMD gdp population
+Load specific variables:
+{p 8 12 2}{cmd:. GMD gdp population}
 
 {p 4 8 2}
-Load data for a specific country:{break}
-. GMD, country(USA)
+Load data for a specific country:
+{p 8 12 2}{cmd:. GMD, country(USA)}
 
 {p 4 8 2}
-Combine options:{break}
-. GMD nGDP pop, country(USA) version(2024_04)
+View country codes and names:
+{p 8 12 2}{cmd:. GMD isomapping}
+
+{p 4 8 2}
+Combine options:
+{p 8 12 2}{cmd:. GMD ngdp pop, country(USA) version(2024_04)}
 
 {title:Storage and Updates}
 
 {p 4 4 2}
 The package stores datasets in the following locations:
+
 {p 8 12 2}
 - Current version: {it:sysdir_personal}/GMD/GMD.dta
+
 {p 8 12 2}
 - Specific versions: {it:sysdir_personal}/GMD/vintages/GMD_YYYY_QQ.dta
 
 {p 4 4 2}
 The command automatically:
+
 {p 8 12 2}
 - Creates necessary directories
 {p 8 12 2}
@@ -81,9 +90,11 @@ The command automatically:
 {title:Author}
 
 {p 4 8 2}
-Mohamed Lehbib{break}
-Email: lehbib@nus.edu.sg{break}
-Website: https://www.globalmacrodata.com/
+Mohamed Lehbib
+{p 4 8 2}
+Email: {browse "mailto:lehbib@nus.edu.sg":lehbib@nus.edu.sg}
+{p 4 8 2}
+Website: {browse "https://www.globalmacrodata.com":https://www.globalmacrodata.com}
 
 {title:Version}
 
