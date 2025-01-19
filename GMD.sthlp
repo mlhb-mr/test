@@ -99,6 +99,7 @@ Mohamed Lehbib{break}
 Email: {browse "mailto:lehbib@nus.edu.sg":lehbib@nus.edu.sg}{break}
 Website: {browse "https://www.globalmacrodata.com":https://www.globalmacrodata.com}
 
+
 {title:Citation}
 
 {pstd}
@@ -108,6 +109,11 @@ To cite this dataset, please use:
 Müller, Karsten, Chenzi Xu, Mohamed Lehbib, and Ziliang Chen. 2025.{break}
 "The Global Macro Database: A New Historical Dataset of Macroeconomic Statistics."{break}
 Working Paper.
+
+{pstd}
+For in-line citations:{break}
+{pmore}(...) using data from the Global Macro Database (Müller et al., 2025){break}
+{pmore}Müller et al. (2025) provide a comprehensive global macro dataset (...)
 
 {pstd}
 BibTeX:{break}
