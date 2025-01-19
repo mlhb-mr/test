@@ -91,12 +91,34 @@ The command automatically:
 {pmore}- Validates version formats{p_end}
 {pmore}- Checks for required variables{p_end}
 
+
 {title:Author}
 
 {pstd}
 Mohamed Lehbib{break}
 Email: {browse "mailto:lehbib@nus.edu.sg":lehbib@nus.edu.sg}{break}
 Website: {browse "https://www.globalmacrodata.com":https://www.globalmacrodata.com}
+
+{title:Citation}
+
+{pstd}
+To cite this dataset, please use:
+
+{pmore}
+Müller, Karsten, Chenzi Xu, Mohamed Lehbib, and Ziliang Chen. 2025.{break}
+"The Global Macro Database: A New Historical Dataset of Macroeconomic Statistics."{break}
+Working Paper.
+
+{pstd}
+BibTeX:{break}
+{cmd}
+@techreport{mueller2025global,{break}
+    title = {The Global Macro Database: A New Historical Dataset of Macroeconomic Statistics},{break}
+    author = {Müller, Karsten and Xu, Chenzi and Lehbib, Mohamed and Chen, Ziliang},{break}
+    year = {2025},{break}
+    type = {Working Paper}{break}
+}
+{txt}
 
 {title:Version}
 
