@@ -2,14 +2,35 @@ program define GMD
     version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
     
+    * Define paths (moved up for isomapping check)
+    local personal_dir = c(sysdir_personal)
+    local base_dir "`personal_dir'/GMD/"
+    
     * Check if isomapping is specifically requested
     if "`anything'" == "isomapping" {
-        local personal_dir = c(sysdir_personal)
-        local base_dir "`personal_dir'/GMD/"
-        use "`base_dir'isomapping.dta", clear
-        display as text "Displaying country codes and names from isomapping.dta"
+        * Set download paths for isomapping
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/isomapping.dta"
+        local data_path "`base_dir'isomapping.dta"
+        
+        * Check if isomapping exists, if not, try to download it
+        capture confirm file "`data_path'"
+        if _rc {
+            display as text "Isomapping file not found locally. Attempting to download..."
+            
+            * Try to download the isomapping file
+            capture copy "`download_url'" "`data_path'", replace
+            if _rc {
+                display as error "Failed to download isomapping.dta"
+                display as error "Please check your internet connection"
+                exit _rc
+            }
+            display as text "Download complete."
+        }
+        
+        use "`data_path'", clear
         exit
     }
+    
 	
     * Determine current version for display purposes only
     local current_date = date(c(current_date), "DMY")
