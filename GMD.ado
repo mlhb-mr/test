@@ -143,7 +143,7 @@ program define GMD
     * If user specified variables, keep only those plus ISO3 and year
     if "`anything'" != "" & "`anything'" != "isomapping" {
         * Create a local macro with all variables to keep
-        local keepvars "ISO3 year `anything'"
+        local keepvars "ISO3 year countryname `anything'"
         
         * Check if specified variables exist
         foreach var of local anything {
