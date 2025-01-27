@@ -8,7 +8,7 @@ local countrylist Afghanistan-AFG Albania-ALB Algeria-DZA "American Samoa-ASM" A
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMD.dta"
     
     * Display package information
-    display as text "Global Macro Database by Müller et. al (2025)d"
+    display as text "Global Macro Database by Müller et. al (2025)a"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     
@@ -18,8 +18,7 @@ local countrylist Afghanistan-AFG Albania-ALB Algeria-DZA "American Samoa-ASM" A
         local valid = 0
         
         foreach pair of local countrylist {
-            local cname : word 1 of `pair'
-            local ccode : word 2 of `pair'
+            local ccode = substr("`pair'", -3, .)
             if "`country'" == "`ccode'" {
                 local valid = 1
                 continue, break
