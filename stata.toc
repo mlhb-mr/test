@@ -3,4 +3,4 @@ d Materials by Müller et. al (2025)
 d lehbib@nus.edu.sg
 d https://www.globalmacrodata.com/
 d
-p GMP Global Macroeconomic Database with version control and country filtering
+p GMD Global Macroeconomic Database with version control and country filtering
