@@ -9,7 +9,7 @@ program define GMD
     display as text "Global Macro Database by Müller et. al (2025)xx"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
-    
+    di "`varlist'"
     * Clear any existing data first
     clear
     
