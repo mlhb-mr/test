@@ -10,7 +10,7 @@ program define GMD
 
     * OS detection for path handling
     local os = c(os)
-    local pathsep = cond(c(os) == "MacOSX", "/", "/")  // pathsep() alternative
+    local pathsep = cond(c(os) == "MacOSX", "/", "/") 
 
     * Determine current version
     local current_date = date(c(current_date), "DMY")
