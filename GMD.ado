@@ -1,7 +1,7 @@
 program define GMD
     version 14.0
     syntax [varlist] [, country(string)]
-    
+    clear 
     * Base URL for the data
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMD.dta"
     
