@@ -1,6 +1,6 @@
 program define GMD
     version 14.0
-    syntax [anything] [, clear Version(string) Country(string)]
+    syntax [anything] [, clear country(string)]
     
     * Get the directory where the ado file is installed
     local ado_dir : sysdir PLUS
@@ -16,65 +16,19 @@ program define GMD
         exit
     }
     
-    * Determine current version for display purposes only
-    local current_date = date(c(current_date), "DMY")
-    local current_year = year(date(c(current_date), "DMY"))
-    local current_month = month(date(c(current_date), "DMY"))
-    
-    * Determine quarter based on current month (for display only)
-    if `current_month' <= 3 {
-        local quarter "01"
-    }
-    else if `current_month' <= 6 {
-        local quarter "04"
-    }
-    else if `current_month' <= 9 {
-        local quarter "07"
-    }
-    else {
-        local quarter "10"
-    }
-    
-    local current_version "`current_year'_`quarter'"
-    
-    * Set default version if not specified
-    if "`version'" == "" {
-        local version "current"
-    }
-    
-    * Validate version format if not current
-    if "`version'" != "current" {
-        if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
-            display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04) or 'current'"
-            display as error "Valid quarters are: 01, 04, 07, 10"
-            exit 198
-        }
-    }
-    
     * Display package information
     display as text "Global Macro Database by Müller et. al (2025)"
-    display as text "Version: `current_version'"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     
-    * Set data path based on version
-    if "`version'" == "current" {
-        local data_path "`pkg_dir'GMD.dta"
-    }
-    else {
-        local data_path "`pkg_dir'vintages/GMD_`version'.dta"
-    }
+    * Set data path for main dataset
+    local data_path "`pkg_dir'GMD.dta"
     
     * Try to load the dataset
     capture use "`data_path'", clear
     if _rc {
-        if "`version'" == "current" {
-            display as error "Current version dataset (GMD.dta) not found in package directory"
-        }
-        else {
-            display as error "Version `version' (GMD_`version'.dta) not found in vintages directory"
-        }
-        display as error "Please check if the version exists and if the package was installed correctly"
+        display as error "Dataset (GMD.dta) not found in package directory"
+        display as error "Please check if the package was installed correctly"
         exit _rc
     }
     
