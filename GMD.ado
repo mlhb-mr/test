@@ -1,36 +1,116 @@
 program define GMD
-    version 14.0
-    syntax [anything] [, clear country(string)]
+    version 16.0
+    syntax [anything] [, clear Version(string) Country(string)]
     
-    * Get the directory where the ado file is installed
-    local ado_dir : sysdir PLUS
-    local pkg_dir "`ado_dir'/g/"
+    * Define paths (moved up for isomapping check)
+    local personal_dir = c(sysdir_personal)
+    local base_dir "`personal_dir'/GMD/"
     
     * Check if isomapping is specifically requested
     if "`anything'" == "isomapping" {
-        capture use "`pkg_dir'isomapping.dta", clear
+        * Set download paths for isomapping
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/isomapping.dta"
+        local data_path "`base_dir'isomapping.dta"
+        
+        * Check if isomapping exists, if not, try to download it
+        capture confirm file "`data_path'"
         if _rc {
-            display as error "Could not find isomapping.dta in the package directory"
-            exit _rc
+            display as text "Isomapping file not found locally. Attempting to download..."
+            
+            * Try to download the isomapping file
+            capture copy "`download_url'" "`data_path'", replace
+            if _rc {
+                display as error "Failed to download isomapping.dta"
+                display as error "Please check your internet connection"
+                exit _rc
+            }
+            display as text "Download complete."
         }
+        
+        use "`data_path'", clear
         exit
+    }
+    
+	
+    * Determine current version for display purposes only
+    local current_date = date(c(current_date), "DMY")
+    local current_year = year(date(c(current_date), "DMY"))
+    local current_month = month(date(c(current_date), "DMY"))
+    
+    * Determine quarter based on current month (for display only)
+    if `current_month' <= 3 {
+        local quarter "01"
+    }
+    else if `current_month' <= 6 {
+        local quarter "04"
+    }
+    else if `current_month' <= 9 {
+        local quarter "07"
+    }
+    else {
+        local quarter "10"
+    }
+    
+    local current_version "`current_year'_`quarter'"
+    
+    * Set default version if not specified
+    if "`version'" == "" {
+        local version "current"  // Default to current version
+    }
+    
+    * Validate version format if not current
+    if "`version'" != "current" {
+        if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
+            display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04) or 'current'"
+            display as error "Valid quarters are: 01, 04, 07, 10"
+            exit 198
+        }
     }
     
     * Display package information
     display as text "Global Macro Database by Müller et. al (2025)"
+    display as text "Version: `current_version'"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     
-    * Set data path for main dataset
-    local data_path "`pkg_dir'GMD.dta"
+    * Define paths
+    local personal_dir = c(sysdir_personal)
+    local base_dir "`personal_dir'/GMD/"
+    local vintages_dir "`base_dir'vintages/"
     
-    * Try to load the dataset
-    capture use "`data_path'", clear
-    if _rc {
-        display as error "Dataset (GMD.dta) not found in package directory"
-        display as error "Please check if the package was installed correctly"
-        exit _rc
+    * Create base and vintages directories if they don't exist
+    capture mkdir "`base_dir'"
+    capture mkdir "`vintages_dir'"
+    
+    * Set data path and download file name based on version
+    if "`version'" == "current" {
+        local data_path "`base_dir'GMD.dta"
+        local download_file "GMD.dta"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
     }
+    else {
+        local data_path "`vintages_dir'GMD_`version'.dta"
+        local download_file "GMD_`version'.dta"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
+    }
+    
+    * Check if dataset exists, if not, try to download it
+    capture confirm file "`data_path'"
+    if _rc {
+        display as text "Dataset `download_file' not found locally. Attempting to download..."
+        
+        * Try to download the dataset
+        capture copy "`download_url'" "`data_path'", replace
+        if _rc {
+            display as error "Failed to download dataset `download_file'"
+            display as error "Please check if the version exists and your internet connection"
+            exit _rc
+        }
+        display as text "Download complete."
+    }
+    
+    * Load the dataset
+    use "`data_path'", clear
     
     * Check if ISO3 and year variables exist
     foreach var in ISO3 year {
