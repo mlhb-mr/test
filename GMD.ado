@@ -1,5 +1,5 @@
 program define GMD
-    version 16.0
+    version 18.0
     syntax [anything] [, clear Version(string) Country(string)]
     
     * Define paths (moved up for isomapping check)
