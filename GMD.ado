@@ -1,170 +1,125 @@
 program define GMD
-    version 18.0
+    version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
     
-    * Define paths (moved up for isomapping check)
-    local personal_dir = c(sysdir_personal)
-    local base_dir "`personal_dir'/GMD/"
-    
-    * Check if isomapping is specifically requested
-    if "`anything'" == "isomapping" {
-        * Set download paths for isomapping
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/isomapping.dta"
-        local data_path "`base_dir'isomapping.dta"
-        
-        * Check if isomapping exists, if not, try to download it
-        capture confirm file "`data_path'"
-        if _rc {
-            display as text "Isomapping file not found locally. Attempting to download..."
-            
-            * Try to download the isomapping file
-            capture copy "`download_url'" "`data_path'", replace
-            if _rc {
-                display as error "Failed to download isomapping.dta"
-                display as error "Please check your internet connection"
-                exit _rc
-            }
-            display as text "Download complete."
-        }
-        
-        use "`data_path'", clear
-        exit
-    }
-    
-	
-    * Determine current version for display purposes only
+    * Display package header
+    display as text _n(2) "Global Macro Data by Müller et. al (2025)"
+    display as text "Version: " _continue
+    display as result "1.1.0 (macOS compatible)"
+    display as text "Website: {browse https://www.globalmacrodata.com/}" _n
+
+    * OS detection for path handling
+    local os = c(os)
+    local pathsep = cond(c(os) == "MacOSX", "/", "/")  // pathsep() alternative
+
+    * Determine current version
     local current_date = date(c(current_date), "DMY")
-    local current_year = year(date(c(current_date), "DMY"))
-    local current_month = month(date(c(current_date), "DMY"))
-    
-    * Determine quarter based on current month (for display only)
-    if `current_month' <= 3 {
-        local quarter "01"
+    local current_year = year(`current_date')
+    local current_month = month(`current_date')
+    local quarter = ceil(`current_month'/3)*3 - 2
+    local current_version "`current_year'_`=string(`quarter',"%02.0f")'"
+
+    * Version validation
+    if "`version'" == "" local version "current"
+    if "`version'" != "current" & !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
+        display as error "Invalid version format. Valid formats:"
+        display as error "- 'current'"
+        display as error "- YYYY_QQ (e.g., 2024_04)"
+        exit 198
     }
-    else if `current_month' <= 6 {
-        local quarter "04"
-    }
-    else if `current_month' <= 9 {
-        local quarter "07"
-    }
-    else {
-        local quarter "10"
-    }
-    
-    local current_version "`current_year'_`quarter'"
-    
-    * Set default version if not specified
-    if "`version'" == "" {
-        local version "current"  // Default to current version
-    }
-    
-    * Validate version format if not current
-    if "`version'" != "current" {
-        if !regexm("`version'", "^20[0-9]{2}_(01|04|07|10)$") {
-            display as error "Invalid version format. Use YYYY_QQ format (e.g., 2024_04) or 'current'"
-            display as error "Valid quarters are: 01, 04, 07, 10"
-            exit 198
+
+    * Configure paths with OS-aware handling
+    local personal_dir = c(sysdir_personal)
+    local base_dir "`personal_dir'GMD`pathsep'"
+    local vintages_dir "`base_dir'vintages`pathsep'"
+
+    * Create directories with error handling
+    foreach dir in "`base_dir'" "`vintages_dir'" {
+        capture mkdir "`dir'"
+        if _rc {
+            display as error "Failed to create directory: `dir'"
+            if "`os'" == "MacOSX" {
+                display as error "macOS users: Check permissions for:"
+                display as error "`personal_dir'"
+                display as error "Try: {stata shell mkdir -p `dir'}"
+            }
+            exit _rc
         }
     }
-    
-    * Display package information
-    display as text "Global Macro Database by Müller et. al (2025)"
-    display as text "Version: `current_version'"
-    display as text "Website: https://www.globalmacrodata.com/"
-    display as text ""
-    
-    * Define paths
-    local personal_dir = c(sysdir_personal)
-    local base_dir "`personal_dir'/GMD/"
-    local vintages_dir "`base_dir'vintages/"
-    
-    * Create base and vintages directories if they don't exist
-    capture mkdir "`base_dir'"
-    capture mkdir "`vintages_dir'"
-    
-    * Set data path and download file name based on version
+
+    * Configure file paths
     if "`version'" == "current" {
         local data_path "`base_dir'GMD.dta"
-        local download_file "GMD.dta"
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMD.dta"
     }
     else {
         local data_path "`vintages_dir'GMD_`version'.dta"
-        local download_file "GMD_`version'.dta"
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
+        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/GMD_`version'.dta"
     }
-    
-    * Check if dataset exists, if not, try to download it
+
+    * Dataset download logic with enhanced error handling
     capture confirm file "`data_path'"
     if _rc {
-        display as text "Dataset `download_file' not found locally. Attempting to download..."
+        display as text "Downloading dataset: `=upper("`version'")' version..."
         
-        * Try to download the dataset
+        * macOS-specific SSL configuration
+        if "`os'" == "MacOSX" set ssl on
+        
         capture copy "`download_url'" "`data_path'", replace
         if _rc {
-            display as error "Failed to download dataset `download_file'"
-            display as error "Please check if the version exists and your internet connection"
+            display as error "Download failed (Error `=_rc')"
+            display as error "Possible solutions:"
+            display as error "1. Check internet connection"
+            if "`os'" == "MacOSX" {
+                display as error "2. Try: {stata set ssl on}"
+                display as error "3. Check macOS firewall settings"
+            }
+            display as error "4. Verify version exists on GitHub"
             exit _rc
         }
-        display as text "Download complete."
     }
-    
-    * Load the dataset
-    use "`data_path'", clear
-    
-    * Check if ISO3 and year variables exist
+
+    * Load data with validation
+    use "`data_path'", `clear'
     foreach var in ISO3 year {
         capture confirm variable `var'
         if _rc {
-            display as error "`var' variable not found in the dataset"
+            display as error "Critical error: `var' variable missing!"
+            display as error "Reinstall using: {stata GMD, clear}"
             exit 498
         }
     }
-    
-    * If country option is specified, filter for that country
+
+    * Country filtering
     if "`country'" != "" {
-        * Convert country code to uppercase for consistency
         local country = upper("`country'")
-        
-        * Check if the country exists in the dataset
-        quietly: levelsof ISO3, local(countries)
-        if !`: list country in countries' {
-            display as error "Country code `country' not found in the dataset"
-            display as text "To see a list of valid country codes and full country names, type:"
-            display as input "GMD isomapping"
+        capture assert inlist(ISO3, "`country'")
+        if _rc {
+            levelsof ISO3, local(valid_countries)
+            display as error "Invalid country code: `country'"
+            display as text "Valid codes: `=subinstr("`valid_countries'", " ", ", ", .)'"
             exit 498
         }
-        
-        * Keep only specified country
         keep if ISO3 == "`country'"
-        display as text "Filtered data for country: `country'"
     }
-    
-    * If user specified variables, keep only those plus ISO3 and year
-    if "`anything'" != "" & "`anything'" != "isomapping" {
-        * Create a local macro with all variables to keep
-        local keepvars "ISO3 year countryname `anything'"
-        
-        * Check if specified variables exist
-        foreach var of local anything {
-            capture confirm variable `var'
-            if _rc {
-                display as error "Variable `var' not found in the dataset"
-                exit 498
-            }
+
+    * Variable selection
+    if "`anything'" != "" {
+        local keep_vars ISO3 year `anything'
+        capture confirm variable `keep_vars'
+        if _rc {
+            display as error "Invalid variable(s) specified"
+            describe, short
+            exit 498
         }
-        
-        * Keep only specified variables plus ISO3 and year
-        keep `keepvars'
-        
-        * Display success message with kept variables
-        display as text "Dataset loaded with variables: `keepvars'"
+        keep `keep_vars'
     }
-    else if "`anything'" != "isomapping" {
-        display as text "Dataset loaded with all variables"
-    }
-    
-    * Display final dataset dimensions
-    quietly: describe
-    display as text "Final dataset: `r(N)' observations of `r(k)' variables"
+
+    * Final validation
+    qui describe
+    display as text _n "Dataset loaded successfully:"
+    display as text "• Observations: `=string(r(N),"%12.0fc")'"
+    display as text "• Variables:    `=r(k)'"
+    if "`country'" != "" display as text "• Country:      `country'"
+    if "`version'" != "" display as text "• Version:      `version'"
 end
