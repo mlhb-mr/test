@@ -37,7 +37,7 @@ program define GMD
             foreach pair of local countrylist {
                 local cname = substr("`pair'", 1, strpos("`pair'", "|") - 1)
                 local ccode = substr("`pair'", strpos("`pair'", "|") + 1, .)
-                display as text "`cname'" _col(50) "`ccode'"
+                display as text "`ccode'"
         }
             
             display as text "{hline 60}"
