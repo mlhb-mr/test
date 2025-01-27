@@ -4,13 +4,17 @@ program define GMD
     
     * Define paths (moved up for isomapping check)
     local personal_dir = c(sysdir_personal)
-    local base_dir "`personal_dir'/GMD/"
+    local personal_dir = reverse(subinstr(reverse("`personal_dir'"), "/", "", 1))
+    local base_dir "`personal_dir'/GMD"
     
     * Check if isomapping is specifically requested
     if "`anything'" == "isomapping" {
         * Set download paths for isomapping
         local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/isomapping.dta"
-        local data_path "`base_dir'isomapping.dta"
+        local data_path "`base_dir'/isomapping.dta"
+        
+        * Create directory if it doesn't exist
+        capture mkdir "`base_dir'"
         
         * Check if isomapping exists, if not, try to download it
         capture confirm file "`data_path'"
@@ -31,7 +35,6 @@ program define GMD
         exit
     }
     
-	
     * Determine current version for display purposes only
     local current_date = date(c(current_date), "DMY")
     local current_year = year(date(c(current_date), "DMY"))
@@ -55,7 +58,7 @@ program define GMD
     
     * Set default version if not specified
     if "`version'" == "" {
-        local version "current"  // Default to current version
+        local version "current"
     }
     
     * Validate version format if not current
@@ -73,10 +76,8 @@ program define GMD
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     
-    * Define paths
-    local personal_dir = c(sysdir_personal)
-    local base_dir "`personal_dir'/GMD/"
-    local vintages_dir "`base_dir'vintages/"
+    * Define paths with proper Mac directory structure
+    local vintages_dir "`base_dir'/vintages"
     
     * Create base and vintages directories if they don't exist
     capture mkdir "`base_dir'"
@@ -84,12 +85,12 @@ program define GMD
     
     * Set data path and download file name based on version
     if "`version'" == "current" {
-        local data_path "`base_dir'GMD.dta"
+        local data_path "`base_dir'/GMD.dta"
         local download_file "GMD.dta"
         local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
     }
     else {
-        local data_path "`vintages_dir'GMD_`version'.dta"
+        local data_path "`vintages_dir'/GMD_`version'.dta"
         local download_file "GMD_`version'.dta"
         local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
     }
