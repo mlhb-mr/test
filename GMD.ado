@@ -1,21 +1,24 @@
 program define GMD
     version 14.0
-    syntax [varlist] [, clear country(string)]
+    syntax [varlist] [, country(string)]
     
     * Base URL for the data
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMD.dta"
     
     * Display package information
-    display as text "Global Macro Database by Müller et. al (2025)"
+    display as text "Global Macro Database by Müller et. al (2025)xx"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     
-    * Load data with clear option always enabled
+    * Clear any existing data first
+    clear
+    
+    * Load data based on whether variables are specified
     if "`varlist'" == "" {
-        use "`url'", clear
+        quietly use "`url'"
     }
     else {
-        use ISO3 year countryname `varlist' using "`url'", clear
+        quietly use ISO3 year countryname `varlist' using "`url'"
     }
     
     * If country specified, filter for that country
