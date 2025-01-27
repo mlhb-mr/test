@@ -6,7 +6,7 @@ program define GMD
     local url "https://github.com/mlhb-mr/test/raw/refs/heads/main/GMD.dta"
     
     * Display package information
-    display as text "Global Macro Database by Müller et. al (2025)xx"
+    display as text "Global Macro Database by Müller et. al (2025)"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     di "`varlist'"
