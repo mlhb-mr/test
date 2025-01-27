@@ -10,19 +10,19 @@ program define GMD
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     
-    * If no variables specified, load all
+    * If no variables specified, load all with clear
     if "`varlist'" == "" {
         use "`url'", clear
     }
     else {
-        * Always include key variables
+        * Always include key variables with clear
         use ISO3 year countryname `varlist' using "`url'", clear
     }
     
     * If country specified, filter for that country
     if "`country'" != "" {
         local country = upper("`country'")
-        keep if ISO3 == "`country'"
+        quietly keep if ISO3 == "`country'"
         
         * Check if any observations remain
         quietly count
