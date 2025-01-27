@@ -2,36 +2,17 @@ program define GMD
     version 14.0
     syntax [anything] [, clear Version(string) Country(string)]
     
-    * Define paths (moved up for isomapping check)
-    local personal_dir = c(sysdir_personal)
-    local personal_dir = reverse(subinstr(reverse("`personal_dir'"), "/", "", 1))
-    local base_dir "`personal_dir'/GMD"
+    * Get the directory where the ado file is installed
+    local ado_dir : sysdir PLUS
+    local pkg_dir "`ado_dir'/g/"
     
     * Check if isomapping is specifically requested
     if "`anything'" == "isomapping" {
-        * Set download paths for isomapping
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/isomapping.dta"
-        local data_path "`base_dir'/isomapping.dta"
-        
-        * Create directory if it doesn't exist
-        capture mkdir "`base_dir'"
-        
-        * Check if isomapping exists, if not, try to download it
-        capture confirm file "`data_path'"
+        capture use "`pkg_dir'isomapping.dta", clear
         if _rc {
-            display as text "Isomapping file not found locally. Attempting to download..."
-            
-            * Try to download the isomapping file
-            capture copy "`download_url'" "`data_path'", replace
-            if _rc {
-                display as error "Failed to download isomapping.dta"
-                display as error "Please check your internet connection"
-                exit _rc
-            }
-            display as text "Download complete."
+            display as error "Could not find isomapping.dta in the package directory"
+            exit _rc
         }
-        
-        use "`data_path'", clear
         exit
     }
     
@@ -76,42 +57,26 @@ program define GMD
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
     
-    * Define paths with proper Mac directory structure
-    local vintages_dir "`base_dir'/vintages"
-    
-    * Create base and vintages directories if they don't exist
-    capture mkdir "`base_dir'"
-    capture mkdir "`vintages_dir'"
-    
-    * Set data path and download file name based on version
+    * Set data path based on version
     if "`version'" == "current" {
-        local data_path "`base_dir'/GMD.dta"
-        local download_file "GMD.dta"
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/`download_file'"
+        local data_path "`pkg_dir'GMD.dta"
     }
     else {
-        local data_path "`vintages_dir'/GMD_`version'.dta"
-        local download_file "GMD_`version'.dta"
-        local download_url "https://github.com/mlhb-mr/test/raw/refs/heads/main/vintages/`download_file'"
+        local data_path "`pkg_dir'vintages/GMD_`version'.dta"
     }
     
-    * Check if dataset exists, if not, try to download it
-    capture confirm file "`data_path'"
+    * Try to load the dataset
+    capture use "`data_path'", clear
     if _rc {
-        display as text "Dataset `download_file' not found locally. Attempting to download..."
-        
-        * Try to download the dataset
-        capture copy "`download_url'" "`data_path'", replace
-        if _rc {
-            display as error "Failed to download dataset `download_file'"
-            display as error "Please check if the version exists and your internet connection"
-            exit _rc
+        if "`version'" == "current" {
+            display as error "Current version dataset (GMD.dta) not found in package directory"
         }
-        display as text "Download complete."
+        else {
+            display as error "Version `version' (GMD_`version'.dta) not found in vintages directory"
+        }
+        display as error "Please check if the version exists and if the package was installed correctly"
+        exit _rc
     }
-    
-    * Load the dataset
-    use "`data_path'", clear
     
     * Check if ISO3 and year variables exist
     foreach var in ISO3 year {
