@@ -5,7 +5,6 @@
 {viewerjumpto "Description" "GMD##description"}{...}
 {viewerjumpto "Options" "GMD##options"}{...}
 {viewerjumpto "Examples" "GMD##examples"}{...}
-{viewerjumpto "Storage" "GMD##storage"}{...}
 {title:Title}
 
 {phang}
@@ -15,7 +14,7 @@
 {title:Syntax}
 
 {p 8 17 2}
-{cmdab:GMD} [{it:varlist}] [{cmd:,} {it:clear} {cmdab:v:ersion(}{it:string}{cmd:)} {cmdab:co:untry(}{it:string}{cmd:)}]
+{cmdab:GMD} [{it:varlist}] [{cmd:,} {cmdab:v:ersion(}{it:string}{cmd:)} {cmdab:co:untry(}{it:string}{cmd:)}]
 
 {marker description}{...}
 {title:Description}
@@ -24,13 +23,10 @@
 This command downloads and loads the Global Macro Database. Users can specify which version to load, 
 which variables to keep, and filter for specific countries. The dataset is available in quarterly 
 versions (YYYY_QQ format) or as the current version. Visit {browse "https://www.globalmacrodata.com/data.html"} 
-to see available version dates.
+to see available version dates. The command automatically clears any data in memory before loading.
 
 {marker options}{...}
 {title:Options}
-
-{phang}
-{cmd:clear} specifies to clear the current dataset in memory before loading the new one.
 
 {phang}
 {cmd:version(}{it:string}{cmd:)} specifies which version of the dataset to load. Use either:{p_end}
@@ -72,24 +68,7 @@ Type {cmd:GMD isomapping} to see a list of valid country codes and their corresp
 {phang2}{cmd:. GMD isomapping}
 
 {phang}Combine options:{p_end}
-{phang2}{cmd:. GMD nGDP pop, country(USA) version(2024_04) clear}
-
-{marker storage}{...}
-{title:Storage and Updates}
-
-{pstd}
-The package stores datasets in the following locations:
-
-{pmore}
-Current version: {it:sysdir_personal}/GMD/GMD.dta
-
-{pstd}
-The command automatically:
-
-{pmore}- Creates necessary directories{p_end}
-{pmore}- Downloads missing datasets{p_end}
-{pmore}- Validates version formats{p_end}
-{pmore}- Checks for required variables{p_end}
+{phang2}{cmd:. GMD nGDP pop, country(USA) version(2024_04)}
 
 
 {title:Author}
