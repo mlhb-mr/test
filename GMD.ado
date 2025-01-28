@@ -125,6 +125,6 @@ program define GMD
         display as text "Version: `version'"
     }
     else {
-        display as text "Version: current_version"
+        display as text "Version: `current_version'"
     }
 end
