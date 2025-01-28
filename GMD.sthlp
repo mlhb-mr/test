@@ -114,9 +114,6 @@ Müller, Karsten, Chenzi Xu, Mohamed Lehbib, and Ziliang Chen. 2025.{break}
 Working Paper.
 
 {pstd}
-For in-line citations:
-
-{pstd}
 BibTeX:
 
 {pstd}
