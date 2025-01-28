@@ -12,6 +12,28 @@ program define GMD
     display as text "Global Macro Database by Müller et. al (2025)"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
+
+    * Determine current version for display purposes only
+    local current_date = date(c(current_date), "DMY")
+    local current_year = year(date(c(current_date), "DMY"))
+    local current_month = month(date(c(current_date), "DMY"))
+    
+    * Determine quarter based on current month (for display only)
+    if `current_month' <= 3 {
+        local quarter "01"
+    }
+    else if `current_month' <= 6 {
+        local quarter "04"
+    }
+    else if `current_month' <= 9 {
+        local quarter "07"
+    }
+    else {
+        local quarter "10"
+    }
+    
+    local current_version "`current_year'_`quarter'"
+
     
       * Process version option
     if "`version'" != "" {
@@ -103,6 +125,6 @@ program define GMD
         display as text "Version: `version'"
     }
     else {
-        display as text "Version: current"
+        display as text "Version: current_version"
     }
 end
