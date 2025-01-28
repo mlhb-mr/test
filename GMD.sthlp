@@ -83,9 +83,6 @@ The package stores datasets in the following locations:
 {pmore}
 Current version: {it:sysdir_personal}/GMD/GMD.dta
 
-{pmore}
-Specific versions: {it:sysdir_personal}/GMD/vintages/GMD_YYYY_QQ.dta
-
 {pstd}
 The command automatically:
 
