@@ -23,7 +23,8 @@
 {pstd}
 This command downloads and loads the Global Macro Database. Users can specify which version to load, 
 which variables to keep, and filter for specific countries. The dataset is available in quarterly 
-versions (YYYY_QQ format) or as the current version.
+versions (YYYY_QQ format) or as the current version. Visit {browse "https://www.globalmacrodata.com/data.html"} 
+to see available version dates.
 
 {marker options}{...}
 {title:Options}
@@ -36,7 +37,9 @@ versions (YYYY_QQ format) or as the current version.
 {pmore}
 - "current" for the latest version (default){p_end}
 {pmore}
-- YYYY_QQ format (e.g., "2024_04") for specific versions
+- YYYY_QQ format (e.g., "2024_04") for specific versions{p_end}
+{pmore}
+Visit {browse "https://www.globalmacrodata.com/data.html"} to see all available version dates.
 
 {phang}
 {cmd:country(}{it:string}{cmd:)} specifies a country to filter by using its ISO3 code 
@@ -69,7 +72,7 @@ Type {cmd:GMD isomapping} to see a list of valid country codes and their corresp
 {phang2}{cmd:. GMD isomapping}
 
 {phang}Combine options:{p_end}
-{phang2}{cmd:. GMD nGDP pop, country(USA) version(2024_04)}
+{phang2}{cmd:. GMD nGDP pop, country(USA) version(2024_04) clear}
 
 {marker storage}{...}
 {title:Storage and Updates}
@@ -98,7 +101,6 @@ The command automatically:
 Mohamed Lehbib{break}
 Email: {browse "mailto:lehbib@nus.edu.sg":lehbib@nus.edu.sg}{break}
 Website: {browse "https://www.globalmacrodata.com":https://www.globalmacrodata.com}
-
 
 
 {title:Citation}
