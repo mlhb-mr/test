@@ -29,7 +29,7 @@ to see available version dates. The command automatically clears any data in mem
 {title:Options}
 
 {phang}
-{cmd:version(}{it:YYYY_QQ}{cmd:)} specifies which version of the dataset to load (e.g., 2024_04).{p_end}
+{cmd:version(}{it:YYYY_QQ}{cmd:)} specifies which version of the dataset to load (e.g., 2025_01).{p_end}
 {pmore}
 Visit {browse "https://www.globalmacrodata.com/data.html"} to see all available version dates.
 
@@ -51,7 +51,7 @@ Type {cmd:GMD isomapping} to see a list of valid country codes and their corresp
 {phang}Load the latest version:{p_end}
 {phang2}{cmd:. GMD}
 
-{phang}Load a specific version:{p_end}
+{phang}Load a specific version, default is current:{p_end}
 {phang2}{cmd:. GMD, version(2025_01)}
 
 {phang}Load specific variables:{p_end}
@@ -64,7 +64,7 @@ Type {cmd:GMD isomapping} to see a list of valid country codes and their corresp
 {phang2}{cmd:. GMD isomapping}
 
 {phang}Combine options:{p_end}
-{phang2}{cmd:. GMD nGDP pop, country(SIN) version("current")}
+{phang2}{cmd:. GMD nGDP pop, country(SIN) version(2025_01)}
 
 
 {title:Author}
