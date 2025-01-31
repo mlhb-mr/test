@@ -101,6 +101,21 @@ program define GMD
     quietly: describe
     display as text "Final dataset: `r(N)' observations of `r(k)' variables"
 
+    * Keep the first year with data for every country 
+    qui ds ISO3 year countryname, not
+    local vars `r(varlist)'
+    qui egen all_missing = rowmiss(`vars')
+    qui replace all_missing = (all_missing == `:word count `vars'')
+    
+    * Sort by country and year
+    sort ISO3 year
+    qui bysort ISO3 (year): egen first_year = min(year) if all_missing == 0
+    qui bysort ISO3: egen first_year_final = min(first_year)
+    qui keep if year >= first_year_final
+    
+    * Drop 
+    drop all_missing first_year first_year_final
+    
      * Determine current version for display purposes only
     local current_date = date(c(current_date), "DMY")
     local current_year = year(date(c(current_date), "DMY"))
