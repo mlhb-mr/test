@@ -22,11 +22,6 @@ program define GMD
         if lower("`version'") == "current" {
             local data_url "`base_url'/GMD.dta"
         }
-        * Validate version format (YYYY_QQ)
-        else if !regexm("`version'", "^20[0-9]{2}_(0[1-4])$") {
-            display as error "Error: Version must be either 'current' or in YYYY_QQ format (e.g., 2024_04)"
-            exit 498
-        }
         else {
             * Set URL for specific version
             local data_url "`base_url'/GMD_`version'.dta"
