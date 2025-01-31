@@ -17,6 +17,8 @@ program define GMD
     local current_date = date(c(current_date), "DMY")
     local current_year = year(date(c(current_date), "DMY"))
     local current_month = month(date(c(current_date), "DMY"))
+
+   di `current_month'
 	
 	* Determine quarter based on current month (for display only)
     if `current_month' <= 3 {
