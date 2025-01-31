@@ -9,7 +9,7 @@ program define GMD
     local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main"
     
     * Display package information
-    display as text "Global Macro Database by Müller et. al (2025)"
+    display as text "Global Macro Database by Müller et. al (2025)xxd"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
 
@@ -147,6 +147,6 @@ program define GMD
         display as text "Version: `version'"
     }
     else {
-        display as text "Version: `current_version'"
+        display as text "Version: `current_version'_v`number_version'"
     }
 end
