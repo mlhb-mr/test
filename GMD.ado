@@ -9,16 +9,9 @@ program define GMD
     local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main"
     
     * Display package information
-    display as text "Global Macro Database by Müller et. al (2025)"
+    display as text "Global Macro Database by Müller et. al (2025)f"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
-
-    * Determine current version for display purposes only
-    local current_date = date(c(current_date), "DMY")
-    local current_year = year(date(c(current_date), "DMY"))
-    local current_month = month(date(c(current_date), "DMY"))
-
-   di `current_month'
 	
 	* Determine quarter based on current month (for display only)
     if `current_month' <= 3 {
@@ -36,32 +29,18 @@ program define GMD
     
     local current_version "`current_year'_`quarter'"
    
-   * Get the latest version number by trying to download versions
-    local version_number = 1
-    local found_latest = 0
-    
-    while !`found_latest' {
-        capture copy "`base_url'/GMD_`current_version'_v`version_number'.dta" "temp_check.dta", replace
-        if _rc {
-            local found_latest = 1
-            local version_number = `version_number' - 1
-        }
-        else {
-            erase "temp_check.dta"
-            local version_number = `version_number' + 1
-        }
-    }
-    
-    if `version_number' == 0 {
-        display as error "Error: No versions found for current quarter"
-        exit 498
-    }
-    
-    * Process version option
+	* Get the final version
+	qui filelist
+	qui gen x = substr(filename, -5, 1)
+    qui destring x, force replace
+	qui su x
+	local number_version = r(max)
+	
+      * Process version option
     if "`version'" != "" {
         * Handle current version explicitly
         if lower("`version'") == "current" {
-            local data_url "`base_url'/GMD_`current_version'_v`version_number'.dta"
+            local data_url "`base_url'/GMD_`current_version'_v`number_version'.dta"
         }
         else {
             * Set URL for specific version
@@ -69,8 +48,8 @@ program define GMD
         }
     }
     else {
-        * Default to current version
-        local data_url "`base_url'/GMD_`current_version'_v`version_number'.dta"
+        * Default to current base URL
+        local data_url "`base_url'/GMD.dta"
     }
     
     * If country specified, validate it against the list
@@ -152,7 +131,10 @@ program define GMD
     * Drop 
     drop all_missing first_year first_year_final
     
-     
+     * Determine current version for display purposes only
+    local current_date = date(c(current_date), "DMY")
+    local current_year = year(date(c(current_date), "DMY"))
+    local current_month = month(date(c(current_date), "DMY"))
     
     
     
@@ -161,6 +143,6 @@ program define GMD
         display as text "Version: `version'"
     }
     else {
-        display as text "Version: `current_version'_v`number_version'"
+        display as text "Version: `current_version'"
     }
 end
