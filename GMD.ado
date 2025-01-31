@@ -9,18 +9,43 @@ program define GMD
     local base_url "https://github.com/mlhb-mr/test/raw/refs/heads/main"
     
     * Display package information
-    display as text "Global Macro Database by Müller et. al (2025)xx"
+    display as text "Global Macro Database by Müller et. al (2025)f"
     display as text "Website: https://www.globalmacrodata.com/"
     display as text ""
 
-   
-
+    * Determine current version for display purposes only
+    local current_date = date(c(current_date), "DMY")
+    local current_year = year(date(c(current_date), "DMY"))
+    local current_month = month(date(c(current_date), "DMY"))
+	
+	* Determine quarter based on current month (for display only)
+    if `current_month' <= 3 {
+        local quarter "01"
+    }
+    else if `current_month' <= 6 {
+        local quarter "04"
+    }
+    else if `current_month' <= 9 {
+        local quarter "07"
+    }
+    else {
+        local quarter "10"
+    }
     
+    local current_version "`current_year'_`quarter'"
+   
+	* Get the final version
+	qui filelist
+	qui gen x = substr(filename, -5, 1)
+    qui destring x, force replace
+	qui su x
+	local number_version = r(max)
+	
       * Process version option
     if "`version'" != "" {
         * Handle current version explicitly
         if lower("`version'") == "current" {
-            local data_url "`base_url'/GMD.dta"
+            local data_url "`base_url'/GMD_`current_version'_v`number_version'.dta"
         }
         else {
             * Set URL for specific version
@@ -111,26 +136,9 @@ program define GMD
     * Drop 
     drop all_missing first_year first_year_final
     
-     * Determine current version for display purposes only
-    local current_date = date(c(current_date), "DMY")
-    local current_year = year(date(c(current_date), "DMY"))
-    local current_month = month(date(c(current_date), "DMY"))
+     
     
-    * Determine quarter based on current month (for display only)
-    if `current_month' <= 3 {
-        local quarter "01"
-    }
-    else if `current_month' <= 6 {
-        local quarter "04"
-    }
-    else if `current_month' <= 9 {
-        local quarter "07"
-    }
-    else {
-        local quarter "10"
-    }
     
-    local current_version "`current_year'_`quarter'"
     
     * Display version information
     if "`version'" != "" {
